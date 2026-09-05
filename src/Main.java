@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static PatientBST patientBST = new PatientBST();
+    static EmergencyQueue emergencyQueue = new EmergencyQueue();
     static TreatmentStack treatmentStack = new TreatmentStack();
 
     public static void main(String[] args) {
@@ -13,8 +14,9 @@ public class Main {
 
             switch (choice) {
                 case 1 -> patientMenu();
-                case 2 -> stackMenu();
-                case 3 -> visitHistoryMenu();
+                case 2 -> queueMenu();
+                case 3 -> stackMenu();
+                case 4 -> visitHistoryMenu();
                 case 0 -> System.out.println("Exiting system. Goodbye!");
                 default -> System.out.println("Invalid choice. Try again.");
             }
@@ -26,8 +28,9 @@ public class Main {
     private static void printMainMenu() {
         System.out.println("\n===== MINI HOSPITAL EMERGENCY MANAGEMENT SYSTEM =====");
         System.out.println("1. Patient Records (BST)");
-        System.out.println("2. Treatment History (Stack)");
-        System.out.println("3. Patient Visit History (Linked List)");
+        System.out.println("2. Emergency Patient Queue (Queue)");
+        System.out.println("3. Treatment History (Stack)");
+        System.out.println("4. Patient Visit History (Linked List)");
         System.out.println("0. Exit");
     }
 
@@ -103,6 +106,35 @@ public class Main {
         } while (choice != 0);
     }
 
+    private static void queueMenu() {
+        int choice;
+        do {
+            System.out.println("\n---- Emergency Patient Queue Menu ----");
+            System.out.println("1. Add Patient to Queue (Enqueue)");
+            System.out.println("2. Treat Next Patient (Dequeue)");
+            System.out.println("3. Display Waiting Patients");
+            System.out.println("0. Back to Main Menu");
+            choice = readInt("Enter your choice: ");
+
+            switch (choice) {
+                case 1 -> enqueuePatient();
+                case 2 -> emergencyQueue.dequeue();
+                case 3 -> emergencyQueue.display();
+                case 0 -> System.out.println("Returning to main menu...");
+                default -> System.out.println("Invalid choice.");
+            }
+        } while (choice != 0);
+    }
+
+    private static void enqueuePatient() {
+        int id = readInt("Enter Patient ID: ");
+        Patient patient = patientBST.search(id);
+        if (patient == null) {
+            System.out.println("Patient not found in records.");
+            return;
+        }
+        emergencyQueue.enqueue(patient);
+    }
     private static void pushTreatment() {
         int id = readInt("Enter Patient ID: ");
         Patient patient = patientBST.search(id);
