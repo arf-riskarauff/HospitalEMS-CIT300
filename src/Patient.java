@@ -7,6 +7,9 @@ public class Patient {
     VisitLinkedList visitHistory;
 
     public Patient(int patientId, String name, int age, String contactNumber, String medicalCondition) {
+        if (age < 0) {
+            throw new IllegalArgumentException("Age cannot be negative.");
+        }
         this.patientId = patientId;
         this.name = name;
         this.age = age;
